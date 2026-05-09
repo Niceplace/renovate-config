@@ -1,0 +1,64 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Centralized Renovate preset for Niceplace repositories. Covers Docker, GitHub Actions, Python (pep621/uv), Node.js/Bun (npm), and Concourse CI.",
+
+  "extends": ["config:recommended"],
+
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update Docker images in Concourse CI task and pipeline YAML files",
+      "managerFilePatterns": [
+        "concourse-ci/tasks/.+\\.ya?ml$",
+        "concourse-ci/pipelines/.+\\.ya?ml$"
+      ],
+      "matchStrings": [
+        "repository:\\s+(?<depName>[a-z0-9/_.:-]+?)(?:\\s*tag:\\s+(?<currentValue>[a-z0-9._-]+?))?"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
+    }
+  ],
+
+  "prConcurrentLimit": 0,
+  "branchConcurrentLimit": 0,
+
+  "docker-compose": {
+    "pinDigests": true
+  },
+
+  "dockerfile": {
+    "pinDigests": true
+  },
+
+  "packageRules": [
+    {
+      "description": "Automerge minor, patch, pin, and digest updates",
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    },
+    {
+      "description": "Never automerge major updates; delay 7 days before proposing",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "minimumReleaseAge": "7 days"
+    },
+    {
+      "description": "Group GitHub Actions updates and pin SHAs",
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions",
+      "pinDigests": true
+    }
+  ],
+
+  "platformAutomerge": true,
+
+  "labels": ["dependencies"],
+
+  "semanticCommits": "enabled",
+
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "🤖 Dependency Dashboard",
+  "dependencyDashboardLabels": ["renovate", "dependencies"],
+  "dependencyDashboardAutoclose": true
+}

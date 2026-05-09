@@ -1,0 +1,77 @@
+name: Renovate Config Validator
+
+on:
+  push:
+    paths:
+      - "renovate-config.js"
+      - "renovate-presets/**"
+  pull_request:
+    paths:
+      - "renovate-config.js"
+      - "renovate-presets/**"
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: "lts/*"
+
+      - name: Setup Bun.sh
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: "1.x"
+
+      - name: Run Renovate Config Validator
+        id: validate
+        run: |
+          npx --yes --package renovate -- renovate-config-validator \
+            renovate-config.js \
+            renovate-presets/default.json5 2>&1 | tee renovate-validation-output.log
+
+      - name: Post PR comment with validation results
+        if: github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          bun run ./.github/scripts/renovate-config-comment.ts "$(cat renovate-validation-output.log)" "${{ github.event.pull_request.number }}"
+
+      - name: Show helpful error message
+        if: failure() && github.event_name == 'pull_request'
+        run: |
+          cat << 'EOF' >> $GITHUB_STEP_SUMMARY
+
+          ## ❌ Renovate Configuration Validation Failed
+
+          Your Renovate configuration contains errors that need to be fixed.
+
+          ### Steps to fix:
+
+          1. Review the PR comment above for specific error messages
+          2. Check the [Renovate Configuration Options documentation](https://docs.renovatebot.com/configuration-options/)
+          3. Verify that:
+             - Only valid options are used in `customManagers`
+             - Top-level options like `pinDigests` are not used inside `customManagers`
+             - All required fields are present and properly formatted
+             - JSON5 syntax is correct (trailing commas, valid escapes)
+
+          ### Quick help links:
+
+          - [Custom Managers docs](https://docs.renovatebot.com/configuration-options/#custommanagers)
+          - [Config Validation docs](https://docs.renovatebot.com/config-validation/)
+          - [Common errors](https://github.com/renovatebot/renovate/issues?q=is%3Aissue+label%3Aconfig+error)
+
+          EOF
+          echo "::error::Renovate configuration validation failed. Check the comments on pull request ${{ github.event.pull_request.number }} for more details"
+          exit 1
