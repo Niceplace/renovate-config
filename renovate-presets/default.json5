@@ -48,6 +48,89 @@
       "matchManagers": ["github-actions"],
       "groupName": "GitHub Actions",
       "pinDigests": true
+    },
+    {
+      "description": "Set sourceUrl for Docker images where packageName matches GitHub org/repo",
+      "matchDatasources": ["docker"],
+      "sourceUrl": "https://github.com/{{{packageName}}}",
+      "matchPackageNames": [
+        "grafana/loki",
+        "grafana/grafana",
+        "grafana/tempo",
+        "grafana/alloy",
+        "concourse/concourse",
+        "concourse/oci-build-task",
+        "denoland/deno",
+        "ramizpolic/concourse-dind",
+        "joxit/docker-registry-ui",
+        "redpandadata/redpanda",
+        "actualbudget/actual-server",
+        "prom/prometheus"
+      ]
+    },
+    {
+      "description": "Set sourceUrl for Docker images where packageName does not match GitHub path",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["registry"],
+      "sourceUrl": "https://github.com/distribution/distribution"
+    },
+    {
+      "description": "Set sourceUrl for Docker images where packageName does not match GitHub path",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/anomalyco/opencode"],
+      "sourceUrl": "https://github.com/anomalyco/opencode"
+    },
+    {
+      "description": "Set sourceUrl for Docker images where packageName does not match GitHub path",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/moghtech/komodo-core", "ghcr.io/moghtech/komodo-periphery"],
+      "sourceUrl": "https://github.com/moghtech/komodo"
+    },
+    {
+      "description": "Set sourceUrl for Docker images where packageName does not match GitHub path",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/servercontainers/samba"],
+      "sourceUrl": "https://github.com/ServerContainers/samba"
+    },
+    {
+      "description": "Set sourceUrl for Elastic Docker images (registry prefix differs from GitHub path)",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": [
+        "docker.elastic.co/elasticsearch/elasticsearch",
+        "docker.elastic.co/kibana/kibana",
+        "docker.elastic.co/elastic-agent/elastic-agent"
+      ],
+      "sourceUrl": "https://github.com/elastic/{{{(split '/' packageName)[1]}}}"
+    },
+    {
+      "description": "Set sourceUrl for Docker images where packageName does not match GitHub path",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["fireflyiii/core"],
+      "sourceUrl": "https://github.com/firefly-iii/firefly-iii"
+    },
+    {
+      "description": "Set sourceUrl for Docker Hub official images (single name, no org/repo path)",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["postgres"],
+      "sourceUrl": "https://github.com/postgres/postgres"
+    },
+    {
+      "description": "Set sourceUrl for Docker Hub official images (single name, no org/repo path)",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["mongo"],
+      "sourceUrl": "https://github.com/mongodb/mongo"
+    },
+    {
+      "description": "Set sourceUrl for Docker Hub official images (single name, no org/repo path)",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["node"],
+      "sourceUrl": "https://github.com/nodejs/node"
+    },
+    {
+      "description": "Set sourceUrl for Docker images with case mismatch on GitHub",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["pix4d/cogito"],
+      "sourceUrl": "https://github.com/Pix4D/cogito"
     }
   ],
 
