@@ -8,6 +8,7 @@ module.exports = {
     "Niceplace/labrador-maison",
     "Niceplace/cv",
     "Niceplace/jardinier",
+    "Niceplace/mastercrab",
   ],
 
   onboarding: false,

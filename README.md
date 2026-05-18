@@ -19,7 +19,7 @@ Centralized Renovate configuration for Niceplace repositories.
 ```json5
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>Niceplace/renovate-config//renovate-presets/default"]
+  "extends": ["github>Niceplace/renovate-config//renovate-presets/default.json5"]
 }
 ```
 
