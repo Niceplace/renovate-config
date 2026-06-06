@@ -95,12 +95,20 @@
     {
       "description": "Set sourceUrl for Elastic Docker images (registry prefix differs from GitHub path)",
       "matchDatasources": ["docker"],
-      "matchPackageNames": [
-        "docker.elastic.co/elasticsearch/elasticsearch",
-        "docker.elastic.co/kibana/kibana",
-        "docker.elastic.co/elastic-agent/elastic-agent"
-      ],
-      "sourceUrl": "https://github.com/elastic/{{{(split '/' packageName)[1]}}}"
+      "matchPackageNames": ["docker.elastic.co/elasticsearch/elasticsearch"],
+      "sourceUrl": "https://github.com/elastic/elasticsearch"
+    },
+    {
+      "description": "Set sourceUrl for Elastic Docker images (registry prefix differs from GitHub path)",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["docker.elastic.co/kibana/kibana"],
+      "sourceUrl": "https://github.com/elastic/kibana"
+    },
+    {
+      "description": "Set sourceUrl for Elastic Docker images (registry prefix differs from GitHub path)",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["docker.elastic.co/elastic-agent/elastic-agent"],
+      "sourceUrl": "https://github.com/elastic/elastic-agent"
     },
     {
       "description": "Set sourceUrl for Docker images where packageName does not match GitHub path",

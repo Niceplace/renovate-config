@@ -36,9 +36,15 @@ jobs:
       - name: Run Renovate Config Validator
         id: validate
         run: |
+          set -o pipefail
           npx --yes --package renovate -- renovate-config-validator \
             renovate-config.js \
             renovate-presets/default.json5 2>&1 | tee renovate-validation-output.log
+
+      - name: Surface validation errors
+        if: failure()
+        run: |
+          grep -A 3 -i "ERROR\|Invalid\|error" renovate-validation-output.log || cat renovate-validation-output.log
 
       - name: Post PR comment with validation results
         if: github.event_name == 'pull_request'
